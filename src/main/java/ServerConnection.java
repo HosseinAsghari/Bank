@@ -43,9 +43,11 @@ public class ServerConnection {
                     String transDeposit = in.readLine();
                     System.out.println(transId + " " + transType + " " + transAmount + " " + transDeposit);
                     try {
-                        out.println(executeTransaction(transId, transType, transAmount, transDeposit));
+                        executeTransaction(transId, transType, transAmount, transDeposit);
+                        out.println(transId + " was successful.");
                     } catch (DepositException e) {
-                        System.out.println(e.message);
+                        System.err.println(e.getMessage());
+                        out.println(transId + " failed.");
                     }
                 }
             } catch (IOException e) {
@@ -60,13 +62,12 @@ public class ServerConnection {
             }
         }
 
-        private String executeTransaction(String id, String type, BigDecimal amount, String depositId) throws DepositException {
+        private void executeTransaction(String id, String type, BigDecimal amount, String depositId) throws DepositException {
             System.out.println("Executing transaction id #" + id);
             if (type.equalsIgnoreCase("deposit"))
                 serverConfig.depositMoney(amount, depositId);
             else if (type.equalsIgnoreCase("withdraw"))
                 serverConfig.depositMoney(amount.negate(), depositId);
-            return "OK";
         }
     }
 

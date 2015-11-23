@@ -20,4 +20,24 @@ public class Deposit {
         balance = new BigDecimal(initialBalance.replace(",", ""));
         upperLimit = new BigDecimal(upperBound.replace(",", ""));
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public BigDecimal getUpperLimit() {
+        return upperLimit;
+    }
+
+    public void addBalance(BigDecimal amount) throws DepositException {
+        if (this.getBalance().add(amount).compareTo(this.getUpperLimit()) > 0)
+            throw new DepositException("Deposit reached to upper bound.");
+        if (this.getBalance().add(amount).compareTo(new BigDecimal(0)) < 0)
+            throw new DepositException("There is not enough balance in the deposit as requested to withdraw.");
+        this.balance.add(amount);
+    }
 }

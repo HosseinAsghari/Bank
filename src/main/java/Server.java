@@ -24,5 +24,16 @@ public class Server{
 
 
     public void depositMoney(BigDecimal amount, String depositId) throws DepositException{
+        Deposit dep = find(depositId);
+        if (dep.equals(null))
+            throw new DepositException("Deposit not found.");
+        synchronized (dep) {dep.addBalance(amount);}
+    }
+
+    private Deposit find(String depositId) {
+        for (Deposit dep:deposits)
+            if (dep.getId().equals(depositId))
+                return dep;
+        return null;
     }
 }
