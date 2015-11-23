@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public class Server{
     }
 
 
+    public void depositMoney(BigDecimal amount, String depositId) throws DepositException{
+    }
 }

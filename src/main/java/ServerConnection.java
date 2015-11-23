@@ -1,6 +1,7 @@
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,15 +29,24 @@ public class ServerConnection {
 
                 // Send a welcome message to the client.
                 out.println("Hello, you are client #" + clientNumber + ".");
-                out.println("Enter a line with only a period to quit\n");
+                out.println("Enter a line with only a period to quit");
 
                 // Get messages from the client, line by line
                 while (true) {
-                    String input = in.readLine();
-                    if (input == null || input.equals(".")) {
+                    String transId = in.readLine();
+
+                    if (transId == null || transId.equals(".")) {
                         break;
                     }
-                    out.println(input.toUpperCase());
+                    String transType = in.readLine();
+                    BigDecimal transAmount = new BigDecimal(Integer.parseInt(in.readLine()));
+                    String transDeposit = in.readLine();
+                    System.out.println(transId + " " + transType + " " + transAmount + " " + transDeposit);
+                    try {
+                        out.println(executeTransaction(transId, transType, transAmount, transDeposit));
+                    } catch (DepositException e) {
+                        System.out.println(e.message);
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("Error handling client# " + clientNumber + ": " + e);
@@ -48,6 +58,15 @@ public class ServerConnection {
                 }
                 System.out.println("Connection with client# " + clientNumber + " closed");
             }
+        }
+
+        private String executeTransaction(String id, String type, BigDecimal amount, String depositId) throws DepositException {
+            System.out.println("Executing transaction id #" + id);
+            if (type.equalsIgnoreCase("deposit"))
+                serverConfig.depositMoney(amount, depositId);
+            else if (type.equalsIgnoreCase("withdraw"))
+                serverConfig.depositMoney(amount.negate(), depositId);
+            return "OK";
         }
     }
 

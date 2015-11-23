@@ -8,6 +8,7 @@ public class Transaction {
     private String type;
     private BigDecimal amount;
     private String deposit;
+
     public Transaction(String id, String type, String amount, String deposit) {
         this.id = id;
         this.type = type;
@@ -20,5 +21,21 @@ public class Transaction {
     public String toString() {
         return "\ntransactionId: " + id + "\ntransactionType: " + type + "\ntransactionAmount: " + amount +
                 "\ntransactionDeposit: " + deposit;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public String getDeposit() {
+        return deposit;
     }
 }

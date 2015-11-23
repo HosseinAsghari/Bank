@@ -35,9 +35,28 @@ public class Client {
 
 
         // Consume the initial welcoming messages from the server
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             //messageArea.append(in.readLine() + "\n");
             System.out.println(in.readLine() + "\n");
+        }
+    }
+
+    private void sendTransactions() {
+        String response;
+        for (Transaction t: transactions) {
+            try {
+                out.println(t.getId());
+                out.println(t.getType());
+                out.println(t.getAmount());
+                out.println(t.getDeposit());
+              response = in.readLine();
+                System.out.println(response);
+                if (response == null || response.equals("")) {
+                    System.out.println("Inappropriate response!");
+                }
+            } catch (IOException ex) {
+                response = "Error: " + ex;
+            }
         }
     }
 
@@ -60,5 +79,6 @@ public class Client {
             System.out.println("problem connecting to server");
             e.printStackTrace();
         }
+        client.sendTransactions();
     }
 }
